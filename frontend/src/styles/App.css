@@ -3,6 +3,9 @@
   --RegularFont: 'Noto Sans', sans-serif;
   --btnFont: 'Roboto', sans-serif;
   --lineColor: #f5f5f5;
+  --modalBg: #374151;
+  --modalFontColor: #f4f4f5;
+  --modalBorderR: 8px;
 }
 
 
@@ -25,13 +28,12 @@ li {
   padding: 1rem;
   max-width: 1000px;
   margin: auto;
-}
-
-
-
-.content {
   
 }
+
+
+
+
 
 .nav-cont {
   height: 100px;
@@ -68,4 +70,69 @@ li {
   display: flex;
   gap: 2rem;
 
+}
+
+.nav-btn {
+  border: 0;
+  background-color: inherit;
+  font-size: inherit;
+  padding: 0 0 2px 0;
+  font-family: var(--btnFont);
+  text-decoration: none;
+  background-image: linear-gradient(var(--modalBg) 0 0);
+  background-repeat: no-repeat;
+
+  background-size: 0% 2px;
+  background-position: bottom left;
+
+  transition: background-size 0.3s, background-position 0s 0.3s;
+}
+
+
+
+.nav-btn:hover {
+  cursor: pointer;
+  background-size: 100% 2px;
+  background-position: bottom right;
+  
+  
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 100%;
+  z-index: 9998;
+  top:0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-cont {
+  background-color: var(--modalBg);
+  color: var(--modalFontColor);
+  padding: 1rem;
+  border-radius: var(--modalBorderR);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-btn-close {
+  display: flex;
+  border-radius: 50%;
+  border: none;
+  height: 25px;
+  width: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-btn-close:hover {
+  cursor: pointer;
+  transform: scale(0.9);
 }
