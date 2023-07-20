@@ -13,7 +13,9 @@ exports.create_user_post = [
     .escape(),
     body('userPassword')
     .isLength({min:6}).withMessage('Password must have at least 6 characters')
-    .matches(/^(?=.[A-Z])(?=.[!@#$%^&()-_=+{};:,<.>]).$/).withMessage('Password must have at least one uppercase letter and one symbol'),
+    .matches(/^(?=.*[a-z])/).withMessage('Password must have at least one lowercase letter')
+    .matches(/^(?=.*[A-Z])/).withMessage('Password must have at least one uppercase letter')
+    .matches(/^(?=.*[!@#$%^&()_+-])/).withMessage('Password must contain at least one symbol'),
     
     async (req, res) => {
         const errors = validationResult(req)

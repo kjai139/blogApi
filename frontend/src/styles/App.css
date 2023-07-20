@@ -6,6 +6,8 @@
   --modalBg: #374151;
   --modalFontColor: #f4f4f5;
   --modalBorderR: 8px;
+  --errorColor: #f43f5e;
+  --greyOverlay: rgba(128, 128, 128, 0.5);
 }
 
 
@@ -111,6 +113,20 @@ li {
   align-items: center;
 }
 
+.overlay-modal {
+  position: absolute;
+  left: 0;
+  background-color: var(--greyOverlay);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  border-radius: var(--modalBorderR);
+  z-index: 9999;
+}
+
 .modal-cont {
   background-color: var(--modalBg);
   color: var(--modalFontColor);
@@ -120,6 +136,8 @@ li {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  position: relative;
 }
 
 .modal-btn-close {
@@ -135,6 +153,10 @@ li {
 .modal-btn-close:hover {
   cursor: pointer;
   transform: scale(0.9);
+}
+
+.errorMsg {
+  color: var(--errorColor)
 }
 
 
