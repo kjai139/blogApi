@@ -5,7 +5,13 @@ const UserSchema = new Schema({
     name: {
         type:String,
         required: true,
+        unique:true
 
+    },
+    normalized_name: {
+        type:String,
+        required:true,
+        unique:true
     },
     password: {
         type:String,

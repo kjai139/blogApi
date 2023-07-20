@@ -136,3 +136,10 @@ li {
   cursor: pointer;
   transform: scale(0.9);
 }
+
+
+@media screen and (min-width: 320px) {
+  .modal-cont {
+    width: 400px;
+  }
+}
