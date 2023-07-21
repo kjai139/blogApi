@@ -159,6 +159,17 @@ li {
   color: var(--errorColor)
 }
 
+.newUser-btn {
+  border: 0;
+  background-color: inherit;
+  color: var(--modalFontColor);
+  font-weight: bold;
+}
+
+.newUser-btn:hover {
+  cursor: pointer;
+  filter: brightness(85%);
+}
 
 @media screen and (min-width: 320px) {
   .modal-cont {

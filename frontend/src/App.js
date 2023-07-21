@@ -1,11 +1,14 @@
 
 import Layout from './components/Layout';
+import { UserProvider } from './components/UserContext';
 
 function App() {
   return (
-    <Layout>
-      <h1>This is the app</h1>
-    </Layout>
+    <UserProvider>
+      <Layout>
+        <h1>This is the app</h1>
+      </Layout>
+    </UserProvider>
   );
 }
 

@@ -2,6 +2,8 @@ const User = require('../models/userModel')
 const { body, validationResult} = require('express-validator')
 const debug = require('debug')('blogApi:usersController')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 
 
 
@@ -81,6 +83,78 @@ exports.users_create_check = async (req, res) => {
     } catch (err) {
         res.json({
             message:err
+        })
+    }
+}
+
+exports.users_login_post = async (req, res) => {
+    const userName = req.body.userName.toLowerCase()
+    const userPassword = req.body.userPassword
+    try {
+        const user = await User.findOne({
+            normalized_name: userName
+        })
+
+        if (!user) {
+            return res.json({
+                message: 'username does not exist'
+            })
+        }
+        const passwordsMatch = await bcrypt.compare(userPassword, user.password)
+
+        if (passwordsMatch) {
+            const token = jwt.sign({
+                id: user._id,
+                username: user.name,
+                normalized_name: user.normalized_name,
+                user_status: user.user_status
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: '1hr'
+            })
+
+            
+
+            //storing jwt in http-only cookie method
+            res.cookie('jwt', token, {
+                httpOnly: true,
+                secure: true,
+                maxAge: 60 * 60 * 1000
+            })
+            res.json({
+                message: 'Login successful'
+            })
+        } else {
+            res.json({
+                message: 'Password was incorrect'
+            })
+        }
+
+
+    }catch (err) {
+        return res.status(500).json({
+            message: err
+        })
+    }
+}
+
+exports.users_login_get = (req, res) => {
+    const token = req.cookies.jwt
+
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const {id, username, normalized_name, user_status} = decodedToken
+
+        res.json({
+            id: id,
+            username: username,
+            normalized_name: normalized_name,
+            user_status, user_status,
+            logged_in: true
+        })
+    } catch (err) {
+        res.status(401).json({
+            logged_in: false,
+            message: err
         })
     }
 }

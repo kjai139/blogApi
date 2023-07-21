@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const mongoose = require('mongoose')
 
@@ -20,13 +21,31 @@ const main = async () => {
     }
 }
 
+//middleware for token verification
+
+const authenticateUser = (req, res, next) => {
+    const token = req.cookies.jwt
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        //gen a new token here to extend
+        next()
+    } catch(err) {
+        res.status(401).json({
+            message: 'Not authenticated'
+        })
+    }
+
+}
+
 main()
 
 app.use(cors({
     origin: allowedOrigins
 }))
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({extended:false}))
+
 
 
 app.use('/users', usersRouter)

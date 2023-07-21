@@ -7,4 +7,8 @@ router.post('/create', userController.create_user_post)
 
 router.get('/check', userController.users_create_check)
 
+router.get('/get', userController.users_login_get)
+
+router.post('/login', userController.users_login_post)
+
 module.exports = router
