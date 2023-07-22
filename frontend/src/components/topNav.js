@@ -1,12 +1,31 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SignInModal from './modals/SignIn'
 import { UserContext } from './UserContext'
-
+import axiosInstance from '../modules/axiosInstance'
 
 const TopNav = () => {
 
     const [isSignInOpen, setIsSignInOpen] = useState(false)
-    const { user } = useContext(UserContext)
+    const { user, setUser, needRefresh } = useContext(UserContext)
+
+    const checkLoginStatus = async () => {
+        try {
+            const response = await axiosInstance.get('users/get')
+
+            if (response.data.logged_in) {
+                setUser(response.data)
+            } else {
+                console.log('user is not logged in')
+            }
+        } catch (err) {
+            console.log('checkloginstatus error', err)
+        }
+    }
+
+    useEffect(() => {
+        checkLoginStatus()
+
+    }, [needRefresh])
 
     return (
         <nav className='nav-cont'>

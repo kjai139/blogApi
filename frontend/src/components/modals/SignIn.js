@@ -8,12 +8,14 @@ const SignInModal = ({closeModal}) => {
 
     const [isCreateAccOn, setIsCreateAccOn] = useState(false)
 
-    const {user, setUser} = useContext(UserContext)
+    const {user, setUser, setNeedRefresh} = useContext(UserContext)
 
     const [loginResult, setLoginResult] = useState('')
 
     const handleCloseModal = (e) => {
         e.preventDefault()
+        setNeedRefresh(true)
+        setLoginResult('')
         closeModal()
     }
 
@@ -50,7 +52,7 @@ const SignInModal = ({closeModal}) => {
                 <div>
                 <h2>{loginResult}</h2>
                 <div>
-                    <button>Close</button>
+                    <button onClick={handleCloseModal}>Close</button>
                 </div>
                 </div>
                 : 

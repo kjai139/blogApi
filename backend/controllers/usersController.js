@@ -152,7 +152,7 @@ exports.users_login_get = (req, res) => {
             logged_in: true
         })
     } catch (err) {
-        res.status(401).json({
+        res.json({
             logged_in: false,
             message: err
         })
