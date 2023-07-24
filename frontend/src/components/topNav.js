@@ -2,16 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import SignInModal from './modals/SignIn'
 import { UserContext } from './UserContext'
 import axiosInstance from '../modules/axiosInstance'
+import {Link, useNavigate} from 'react-router-dom'
 
 const TopNav = () => {
 
     const [isSignInOpen, setIsSignInOpen] = useState(false)
     const { user, setUser, needRefresh } = useContext(UserContext)
 
+    const navigate = useNavigate()
+
     const checkLoginStatus = async () => {
         try {
-            const response = await axiosInstance.get('users/get')
-
+            const response = await axiosInstance.get('users/get', {
+                withCredentials:true
+            })
+            console.log(response.data)
             if (response.data.logged_in) {
                 setUser(response.data)
             } else {
@@ -22,8 +27,26 @@ const TopNav = () => {
         }
     }
 
+    const userLogOut = async () => {
+        try {
+            const response = await axiosInstance.delete('users/logout', {
+                withCredentials:true
+            })
+
+            if (response.data.success) {
+                console.log(response.data.message)
+                setUser(null)
+                navigate('/')
+            }
+            
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         checkLoginStatus()
+        
 
     }, [needRefresh])
 
@@ -46,8 +69,12 @@ const TopNav = () => {
                         Contact
                     </li>
                     {user ? 
-                    <li>
-                        {user.username}
+                    <li style={{
+                        display:'flex',
+                        flexDirection:'column'
+                    }}>
+                        <span><Link to={`dashboard/:${user.id}`}>{user.username}</Link></span>
+                        <button className='topNav-btn' onClick={userLogOut}>Logout</button>
                     </li> :
                     <li>
                         

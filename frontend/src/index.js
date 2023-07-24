@@ -5,11 +5,17 @@ import reportWebVitals from './reportWebVitals';
 import '../src/styles/App.css'
 
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import DashBoard from './components/pages/DashboardPage';
+import HomePage from './components/pages/HomePage';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<App></App>,
+    element:<App><HomePage></HomePage></App>,
+  },
+  {
+    path:'/dashboard/:id',
+    element: <App><DashBoard></DashBoard></App>
   }
 ])
 

@@ -34,6 +34,8 @@ const SignInModal = ({closeModal}) => {
             const response = await axiosInstance.post('/users/login', {
                 userName: userName,
                 userPassword: userPassword
+            }, {
+                withCredentials: true
             })
 
             setLoginResult(response.data.message)

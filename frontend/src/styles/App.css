@@ -71,7 +71,19 @@ li {
   list-style: none;
   display: flex;
   gap: 2rem;
+  align-items: center;
 
+}
+
+.topNav-btn {
+  border: 0;
+  font-size: 12px;
+  border-radius: var(--modalBorderR);
+}
+
+.topNav-btn:hover {
+  cursor: pointer;
+  background-color: var(--errorColor);
 }
 
 .nav-btn {

@@ -2,11 +2,11 @@
 import Layout from './components/Layout';
 import { UserProvider } from './components/UserContext';
 
-function App() {
+function App({children}) {
   return (
     <UserProvider>
       <Layout>
-        <h1>This is the app</h1>
+        {children}
       </Layout>
     </UserProvider>
   );

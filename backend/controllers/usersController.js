@@ -4,8 +4,9 @@ const debug = require('debug')('blogApi:usersController')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+require('dotenv').config()
 
-
+const domain = process.env.BACKEND_DOMAIN || 'localhost'
 
 exports.create_user_post = [
     body('userName')
@@ -96,6 +97,7 @@ exports.users_login_post = async (req, res) => {
         })
 
         if (!user) {
+            debug('userLogin: username does not exist')
             return res.json({
                 message: 'username does not exist'
             })
@@ -118,8 +120,10 @@ exports.users_login_post = async (req, res) => {
             res.cookie('jwt', token, {
                 httpOnly: true,
                 secure: true,
-                maxAge: 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000,
+                domain: domain
             })
+            debug('token sent via httponly cookie')
             res.json({
                 message: 'Login successful'
             })
@@ -139,6 +143,7 @@ exports.users_login_post = async (req, res) => {
 
 exports.users_login_get = (req, res) => {
     const token = req.cookies.jwt
+    debug(token, 'cookies', req.cookies)
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
@@ -157,4 +162,28 @@ exports.users_login_get = (req, res) => {
             message: err
         })
     }
+}
+
+exports.user_logout_post= (req, res) => {
+    debug('logging user out...')
+    try {
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            maxAge: -1,
+            domain: domain,
+            path: '/'
+    
+    
+            
+        })
+        res.json({
+            message: 'User has successfully logged out',
+            success:true
+        })
+    } catch(err) {
+        res.status(500).json({
+            message:err
+        })
+    }
+    
 }
