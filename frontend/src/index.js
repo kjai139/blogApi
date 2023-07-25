@@ -7,6 +7,7 @@ import '../src/styles/App.css'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import DashBoard from './components/pages/DashboardPage';
 import HomePage from './components/pages/HomePage';
+import CreatePostPage from './components/pages/CreatePostPage';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path:'/dashboard/:id',
     element: <App><DashBoard></DashBoard></App>
+  },
+  {
+    path:'/dashboard/:id/create-post',
+    element: <App><CreatePostPage></CreatePostPage></App>
   }
 ])
 
