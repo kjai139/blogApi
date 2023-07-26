@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 
 const usersRouter = require('./routes/users')
+const imagesRouter = require('./routes/images')
 
 require('dotenv').config()
 const app = express()
@@ -50,6 +51,7 @@ app.use(express.urlencoded({extended:false}))
 
 
 app.use('/users', usersRouter)
+app.use('/images', imagesRouter)
 
 app.listen(port, '::', () => {
     console.log(`server running on port ${port}!`)

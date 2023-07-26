@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
+import axiosInstance from '../../modules/axiosInstance'
 
 const CreatePost = () => {
     const [content, setContent] = useState('')
@@ -19,6 +20,43 @@ const CreatePost = () => {
         [ 'link', 'image', 'video', 'formula' ],
         [ 'clean' ]
     ]
+
+    const handleImageUpload = () => {
+        
+        
+        const delta = quillRef.current.getEditor()
+
+        const input = document.createElement('input')
+        input.setAttribute('type', 'file')
+        input.setAttribute('accept', 'image/*')
+        input.click()
+
+        input.onchange = () => {
+            const file = input.files[0]
+            uploadImg(file)
+            
+        }
+        
+    }
+
+    const uploadImg = async (file) => {
+        const formData = new FormData()
+        formData.append('image', file)
+        // const formDataObj = Object.fromEntries(formData)
+        // console.log(formDataObj)
+        try {
+            const response = await axiosInstance.post('/images/upload', formData)
+            console.log('upload successful')
+
+            console.log(response.data.message)
+        }catch(err) {
+            console.log('err uploading', err)
+        }
+
+        
+        
+        
+    }
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -46,7 +84,14 @@ const CreatePost = () => {
                 fontSize:'1.5rem'
             }}>Content:</label>
             <ReactQuill ref={quillRef} value={content} onChange={setContent} theme="snow" modules={{
-                toolbar:toolbarOptions
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image:handleImageUpload,
+                    }
+                }
+                
+                
             }}></ReactQuill>
             </div>
             <div>
