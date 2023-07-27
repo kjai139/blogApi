@@ -9,17 +9,7 @@ const CreatePost = () => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
 
-    const toolbarOptions =  [
-        [{ 'font': [] }, { 'size': [] }],
-        [ 'bold', 'italic', 'underline', 'strike' ],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'script': 'super' }, { 'script': 'sub' }],
-        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
-        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
-        [ 'direction', { 'align': [] }],
-        [ 'link', 'image', 'video', 'formula' ],
-        [ 'clean' ]
-    ]
+    
 
     const handleImageUpload = () => {
         
@@ -40,8 +30,16 @@ const CreatePost = () => {
     }
 
     const uploadImg = async (file) => {
+
+        const quill = quillRef.current.getEditor()
+        const range = quill.getSelection()
+        console.log('the range', range, 'editor', quill)
+
         const formData = new FormData()
         formData.append('image', file)
+        formData.append('filename', file.name)
+
+       
         // const formDataObj = Object.fromEntries(formData)
         // console.log(formDataObj)
         try {
@@ -49,6 +47,7 @@ const CreatePost = () => {
             console.log('upload successful')
 
             console.log(response.data.message)
+            quill.insertEmbed(range.index, 'image', response.data.url)
         }catch(err) {
             console.log('err uploading', err)
         }
@@ -57,6 +56,29 @@ const CreatePost = () => {
         
         
     }
+    const quillModule =  {
+        toolbar: {
+            container: [
+                
+                
+                [{ 'font': [] }, { 'size': [] }],
+                [ 'bold', 'italic', 'underline', 'strike' ],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'script': 'super' }, { 'script': 'sub' }],
+                [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                [ 'direction', { 'align': [] }],
+                [ 'link', 'image', 'video', 'formula' ],
+                [ 'clean' ]
+                
+            ],
+            handlers : {
+                image: handleImageUpload
+            }
+        }
+    }
+
+    
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -83,16 +105,7 @@ const CreatePost = () => {
             <label style={{
                 fontSize:'1.5rem'
             }}>Content:</label>
-            <ReactQuill ref={quillRef} value={content} onChange={setContent} theme="snow" modules={{
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image:handleImageUpload,
-                    }
-                }
-                
-                
-            }}></ReactQuill>
+            <ReactQuill ref={quillRef} theme="snow" modules={quillModule}></ReactQuill>
             </div>
             <div>
                 <button>Submit</button>
