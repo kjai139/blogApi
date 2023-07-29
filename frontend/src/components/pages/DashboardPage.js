@@ -18,7 +18,7 @@ const DashBoard = () => {
         <div>
             <span>User dashboard</span>
             <div>
-                <button onClick={() => navigate('./create-post')}>Create Post</button>
+                <button onClick={() => navigate('./posts/create')}>Create Post</button>
             </div>
             <div>
                 <span>Posts display</span>

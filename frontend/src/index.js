@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <App><DashBoard></DashBoard></App>
   },
   {
-    path:'/dashboard/:id/create-post',
+    path:'/dashboard/:id/posts/create',
     element: <App><CreatePostPage></CreatePostPage></App>
   }
 ])

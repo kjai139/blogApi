@@ -16,8 +16,20 @@ const BlogPostSchema = new Schema({
         required:true
     },
     body: {
-        type:String,
+        type:Schema.Types.Mixed,
         required:true
+    },
+    published: {
+        type:Boolean,
+        default: false
+    },
+    publishDate: {
+        type:Date,
+        default:null
+    },
+    draft: {
+        type:Boolean,
+        default:true
     }
 })
 

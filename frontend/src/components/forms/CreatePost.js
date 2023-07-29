@@ -48,6 +48,7 @@ const CreatePost = () => {
 
             console.log(response.data.message)
             quill.insertEmbed(range.index, 'image', response.data.url)
+            quill.setSelection(range.index + 1)
         }catch(err) {
             console.log('err uploading', err)
         }
@@ -56,6 +57,8 @@ const CreatePost = () => {
         
         
     }
+
+   
     const quillModule =  {
         toolbar: {
             container: [
@@ -80,10 +83,24 @@ const CreatePost = () => {
 
     
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
         const delta = quillRef.current.getEditor().getContents()
         console.log(delta)
+
+        try {
+            const response = await axiosInstance.post('/posts/create', {
+                delta: delta
+            }, {
+                withCredentials: true
+            })
+
+            if (response.data.success) {
+                console.log(response.data.message)
+            }
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     return (
