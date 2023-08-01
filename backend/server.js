@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 
 const usersRouter = require('./routes/users')
 const imagesRouter = require('./routes/images')
+const blogPostRouter = require('./routes/posts')
 
 require('dotenv').config()
 const app = express()
@@ -22,21 +23,7 @@ const main = async () => {
     }
 }
 
-//middleware for token verification
 
-const authenticateUser = (req, res, next) => {
-    const token = req.cookies.jwt
-    try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-        //gen a new token here to extend
-        next()
-    } catch(err) {
-        res.status(401).json({
-            message: 'Not authenticated'
-        })
-    }
-
-}
 
 main()
 
@@ -52,6 +39,7 @@ app.use(express.urlencoded({extended:false}))
 
 app.use('/users', usersRouter)
 app.use('/images', imagesRouter)
+app.use('/posts', blogPostRouter)
 
 app.listen(port, '::', () => {
     console.log(`server running on port ${port}!`)

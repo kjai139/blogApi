@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import SignUpModal from './SignUp'
 import CloseButton from '../buttons/Closebutton'
 import axiosInstance from '../../modules/axiosInstance'
@@ -10,7 +10,12 @@ const SignInModal = ({closeModal}) => {
 
     const {user, setUser, setNeedRefresh} = useContext(UserContext)
 
+    const inputRef = useRef(null)
     const [loginResult, setLoginResult] = useState('')
+
+    useEffect(() => {
+        inputRef.current.focus()
+    }, [])
 
     const handleCloseModal = (e) => {
         e.preventDefault()
@@ -54,7 +59,7 @@ const SignInModal = ({closeModal}) => {
                 <div>
                 <h2>{loginResult}</h2>
                 <div>
-                    <button onClick={handleCloseModal}>Close</button>
+                    <button type='button' onClick={handleCloseModal}>Close</button>
                 </div>
                 </div>
                 : 
@@ -76,7 +81,7 @@ const SignInModal = ({closeModal}) => {
                         flexDirection:'column'
                     }}>
                     <label htmlFor='userName'>Username</label>
-                    <input type='text' name='userName' id='userName' autoComplete='off'></input>
+                    <input type='text' name='userName' id='userName' autoComplete='off' ref={inputRef}></input>
                     <label htmlFor='userPassword'>Password</label>
                     <input type='password' name='userPassword' id='userPassword'></input>
                     </div>
@@ -85,8 +90,8 @@ const SignInModal = ({closeModal}) => {
                         justifyContent:'space-between'
                     }}>
                         
-                        <button className='newUser-btn' onClick={createNewUser} >New user</button>
-                        <button>Log in</button>
+                        <button type='button' className='newUser-btn' onClick={createNewUser} >New user</button>
+                        <button type='submit'>Log in</button>
                     </div>
                 </form>
                 }

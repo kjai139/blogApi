@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 const BlogPostSchema = new Schema({
     postTitle: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     createdAt: {
         type: Date,

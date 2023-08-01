@@ -171,6 +171,16 @@ li {
   color: var(--errorColor)
 }
 
+.error-cont {
+  padding: 1rem;
+  border-radius: var(--modalBorderR);
+  background-color: var(--modalBg);
+  color: var(--modalFontColor);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .newUser-btn {
   border: 0;
   background-color: inherit;

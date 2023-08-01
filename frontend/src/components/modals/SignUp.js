@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CloseButton from '../buttons/Closebutton'
 import axiosInstance from '../../modules/axiosInstance'
 import { userValidationScehma, userPasswordValidationSchema} from './validationSchema'
@@ -20,16 +20,21 @@ const SignUpModal = ({closeModal}) => {
 
     const [confirmValidationError, setConfirmValidationError] = useState('')
 
+    const [currentContent, setCurrentContent] = useState('') 
+
     const [isLoading, setIsLoading] = useState(false)
 
     const [resultMsg, setResultMsg] = useState('')
 
+    const focusRef = useRef(null)
+
     useEffect(() => {
-        console.log('userName', userName)
-        console.log('userPw', userPassword)
-        console.log('isUserNameEntered', isUserNameEntered)
-        console.log('isuserPwentered', isUserPasswordEntered)
-    })
+        // console.log('userName', userName)
+        // console.log('userPw', userPassword)
+        // console.log('isUserNameEntered', isUserNameEntered)
+        // console.log('isuserPwentered', isUserPasswordEntered)
+        focusRef.current.focus()
+    }, [currentContent])
 
     const handleUserNameChange = (e) => {
         setUserName(e.target.value)
@@ -43,7 +48,7 @@ const SignUpModal = ({closeModal}) => {
 
     const handleNext = async (e) => {
         e.preventDefault()
-        
+        setCurrentContent('refresh')
         if (!isUserNameEntered) {
             try {
                 setIsLoading(true)
@@ -58,6 +63,7 @@ const SignUpModal = ({closeModal}) => {
                 if (response.data.success) {
                     setIsLoading(false)
                     setIsUserNameEntered(true)
+                    setCurrentContent('pw')
                 } else {
                     setIsLoading(false)
                     console.log(response.data.message)
@@ -156,7 +162,7 @@ const SignUpModal = ({closeModal}) => {
                         gap:'0.5rem'
                     }}>
                         <label htmlFor='userName'>Enter your username:</label>
-                        <input type='text' name='userName' id='userName' onChange={handleUserNameChange} autoComplete='off' value={userName} placeholder='Name must not contain symbols'></input>
+                        <input type='text' name='userName' id='userName' onChange={handleUserNameChange} autoComplete='off' value={userName} placeholder='Name must not contain symbols' ref={focusRef}></input>
                         <span className='errorMsg'>
                             {userValidationError}
                         </span>
@@ -179,7 +185,7 @@ const SignUpModal = ({closeModal}) => {
                     gap:'.5rem'
                 }}>
                 <label htmlFor='userPassword'>Choose a password: Must be at least 6 letters, have one uppercase letter and one symbol</label>
-                <input type='password' name='userPassword' id='userPassword' onChange={handleUserPasswordChange} placeholder='Enter here' value={userPassword}></input>
+                <input type='password' name='userPassword' id='userPassword' onChange={handleUserPasswordChange} placeholder='Enter here' value={userPassword} ref={focusRef}></input>
                         <span className='errorMsg'>
                             {passwordValidationError}
                         </span>

@@ -9,7 +9,9 @@ const userPasswordValidationSchema = yup.object().shape({
     userPassword: yup.string().required('Password is required').min(6, 'Password must have min length of 6 characters').matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter').matches(/^(?=.*[A-Z])/, 'must contain at least one uppercase letter').matches(/^(?=.*[!@#$%^&()_+-])/, 'must have at least one special character')
 })
 
+const postTitleSchema = yup.object().shape({
+    postTitle: yup.string().required('Please enter a title')
+})
 
 
-
-export {userValidationScehma, userPasswordValidationSchema}
+export {userValidationScehma, userPasswordValidationSchema, postTitleSchema}

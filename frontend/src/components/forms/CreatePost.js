@@ -1,7 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
 import axiosInstance from '../../modules/axiosInstance'
+import { postTitleSchema } from "../modals/validationSchema";
+import ErrorMsg from "../modals/errorMsg";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
     const [content, setContent] = useState('')
@@ -9,7 +12,8 @@ const CreatePost = () => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
 
-    
+    const [errorMsg, setErrorMsg] = useState('')
+    const navigate = useNavigate()
 
     const handleImageUpload = () => {
         
@@ -58,8 +62,8 @@ const CreatePost = () => {
         
     }
 
-   
-    const quillModule =  {
+   //for quill you have to use useMemo to stop the repaint from breaking the editor
+    const quillModule = useMemo(() => ({
         toolbar: {
             container: [
                 
@@ -79,7 +83,7 @@ const CreatePost = () => {
                 image: handleImageUpload
             }
         }
-    }
+    }), [])
 
     
 
@@ -87,9 +91,18 @@ const CreatePost = () => {
         e.preventDefault()
         const delta = quillRef.current.getEditor().getContents()
         console.log(delta)
+        const postTitle = e.target.postTitle.value
+        console.log(postTitle)
 
         try {
+            await postTitleSchema.validate({
+                postTitle: postTitle
+            })
+
+            console.log('passed front validation')
+
             const response = await axiosInstance.post('/posts/create', {
+                postTitle: postTitle,
                 delta: delta
             }, {
                 withCredentials: true
@@ -97,14 +110,32 @@ const CreatePost = () => {
 
             if (response.data.success) {
                 console.log(response.data.message)
+                console.log('user', response.data.user)
+                console.log('delta', response.data.delta)
             }
         } catch(err) {
+            
             console.log(err)
+            if (err.request.status === 401) {
+               setErrorMsg('User is not logged in')
+            }
+            console.log(err.request.status)
         }
+
+        
     }
 
     return (
         <div>
+            {errorMsg &&
+            <ErrorMsg>
+                <div className="error-cont">
+                    <span>{errorMsg}</span>
+                    <button onClick={() => navigate('/')}>Close</button>
+                </div>
+            </ErrorMsg> 
+            }
+            
         <form onSubmit={onSubmit}>
             <div style={{
                 display:'flex',
@@ -113,7 +144,7 @@ const CreatePost = () => {
                 
             }}>
             <label htmlFor="post-title">Post title:</label>
-            <input type="text" id="post-title" style={{
+            <input type="text" id="post-title" name="postTitle" style={{
                 flex:'1',
                 fontSize:'1.5rem'
             }}></input>
@@ -125,7 +156,7 @@ const CreatePost = () => {
             <ReactQuill ref={quillRef} theme="snow" modules={quillModule}></ReactQuill>
             </div>
             <div>
-                <button>Submit</button>
+                <button type="submit">Submit</button>
             </div>
         </form>
         
