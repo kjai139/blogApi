@@ -45,6 +45,7 @@ const TopNav = () => {
     }
 
     useEffect(() => {
+        setUser(null)
         checkLoginStatus()
         
 
@@ -73,7 +74,7 @@ const TopNav = () => {
                         display:'flex',
                         flexDirection:'column'
                     }}>
-                        <span><Link to={`dashboard/:${user.id}`}>{user.username}</Link></span>
+                        <span><Link to={`/dashboard/${user.id}`}>{user.username}</Link></span>
                         <button className='topNav-btn' onClick={userLogOut}>Logout</button>
                     </li> :
                     <li>

@@ -5,15 +5,19 @@ import axiosInstance from '../../modules/axiosInstance'
 import { postTitleSchema } from "../modals/validationSchema";
 import ErrorMsg from "../modals/errorMsg";
 import { useNavigate } from "react-router-dom";
+import ResultModal from "../modals/resultModal";
 
 const CreatePost = () => {
     const [content, setContent] = useState('')
     const quillRef = useRef(null)
 
-    const [isSubmitted, setIsSubmitted] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const [errorMsg, setErrorMsg] = useState('')
     const navigate = useNavigate()
+
+    const [resultMsg, setResultMsg] = useState('')
+    const [postTitle, setPostTitle] = useState('')
 
     const handleImageUpload = () => {
         
@@ -91,7 +95,6 @@ const CreatePost = () => {
         e.preventDefault()
         const delta = quillRef.current.getEditor().getContents()
         console.log(delta)
-        const postTitle = e.target.postTitle.value
         console.log(postTitle)
 
         try {
@@ -112,28 +115,47 @@ const CreatePost = () => {
                 console.log(response.data.message)
                 console.log('user', response.data.user)
                 console.log('delta', response.data.delta)
+                setResultMsg(response.data.message)
             }
         } catch(err) {
+            console.log(err.request.status)
             
-            console.log(err)
             if (err.request.status === 401) {
                setErrorMsg('User is not logged in')
+            } else if (err.request.status === 500) {
+                setResultMsg(err.response.data.message)
+            } else {
+                console.log(err)
             }
-            console.log(err.request.status)
+            
         }
 
         
+    }
+
+    const handlePostTitleChange = (e) => {
+        setPostTitle(e.target.value)
+    }
+
+    const closeModal = () => {
+        setResultMsg('')
+        setContent('')
+        setPostTitle('')
     }
 
     return (
         <div>
             {errorMsg &&
             <ErrorMsg>
-                <div className="error-cont">
+                <div className="result-cont">
                     <span>{errorMsg}</span>
                     <button onClick={() => navigate('/')}>Close</button>
                 </div>
             </ErrorMsg> 
+            }
+            {
+                resultMsg &&
+                <ResultModal message={resultMsg} closeModal={closeModal}></ResultModal>
             }
             
         <form onSubmit={onSubmit}>
@@ -144,7 +166,7 @@ const CreatePost = () => {
                 
             }}>
             <label htmlFor="post-title">Post title:</label>
-            <input type="text" id="post-title" name="postTitle" style={{
+            <input type="text" id="post-title" value={postTitle} name="postTitle" onChange={handlePostTitleChange} style={{
                 flex:'1',
                 fontSize:'1.5rem'
             }}></input>
@@ -153,7 +175,7 @@ const CreatePost = () => {
             <label style={{
                 fontSize:'1.5rem'
             }}>Content:</label>
-            <ReactQuill ref={quillRef} theme="snow" modules={quillModule}></ReactQuill>
+            <ReactQuill ref={quillRef} theme="snow" modules={quillModule} value={content}></ReactQuill>
             </div>
             <div>
                 <button type="submit">Submit</button>

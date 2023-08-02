@@ -5,7 +5,8 @@ const BlogPostSchema = new Schema({
     postTitle: {
         type: String,
         required: true,
-        unique: true
+        
+        
     },
     createdAt: {
         type: Date,
@@ -33,5 +34,13 @@ const BlogPostSchema = new Schema({
         default:true
     }
 })
+
+BlogPostSchema.index({
+    postTitle: 1
+}, {
+    unique:true,
+    collation: {locale: 'en', strength: 1}
+})
+
 
 module.exports = mongoose.model('BlogPost', BlogPostSchema)
