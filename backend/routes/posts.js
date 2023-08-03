@@ -9,6 +9,6 @@ router.post('/create', isAuthenticated, blogPostController.create_blogPost_post)
 
 router.get('/get', isAuthenticated, blogPostController.get_blogPost_get)
 
-
+router.post('/publish', isAuthenticated, blogPostController.publishPost_post)
 
 module.exports = router

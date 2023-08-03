@@ -3,12 +3,21 @@ const BlogPost = require('../models/blogPostModel')
 
 const debug = require('debug')('blogApi:blogPostController')
 
+require('dotenv').config()
+const {PutObjectCommand, S3Client, DeleteObjectCommand, CopyObjectCommand} = require('@aws-sdk/client-s3')
 
+const s3Client = new S3Client({
+    region: 'us-east-2',
+    credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY,
+        secretAccessKey: process.env.S3_SECRET
+    }
+})
 
 exports.get_blogPost_get = async (req, res) => {
     debug(req.query.id)
     try {
-        const posts = await BlogPost.find({author: req.query.id})
+        const posts = await BlogPost.find({author: req.query.id}).populate('author').sort({createdAt: -1})
 
         res.json({
             message: `received id ${req.query.id}`,
@@ -42,25 +51,62 @@ exports.create_blogPost_post = [
                 const delta = req.body.delta
                 const authorId = req.user.id
 
+                const updatedDelta = { ...delta}
+                for (const op of updatedDelta.ops) {
+                    if (op.insert.image) {
+                        const imageUrl = op.insert.image
+                        debug(`image:${imageUrl}`)
+                        const bucketname = 'kjblogapiodin'
+                        const urlParts = imageUrl.split('/')
+                        const filename = urlParts[urlParts.length -1]
+
+                        debug(filename)
+                        const copyParams = {
+                            Bucket: bucketname,
+                            CopySource: `${bucketname}/images/temp/${filename}`,
+                            Key: `images/perm/${filename}`,
+                            ACL: 'public-read',
+                            ContentType: 'image/x-icon'
+                            
+                        }
+
+                        const copyCommand = new CopyObjectCommand(copyParams)
+
+                        const response = await s3Client.send(copyCommand)
+                        debug('Object metadata updated', response)
+
+                        op.insert.image = `https://${bucketname}.s3.us-east-2.amazonaws.com/${copyParams.Key}`
+
+                        debug('new url:', op.insert.image)
+
+                    }
+                }
+
                 const newPost = new BlogPost({
                     postTitle: postTitle,
                     author: authorId,
-                    body: delta,
+                    body: updatedDelta,
 
                 })
 
                 await newPost.save()
 
+                
+
                 res.json({
                     message:`Post created`,
                     success:true,
                     
+                    
                 })
             } catch (err) {
                 debug(err.code)
+                debug(err)
+                debug(err.message)
                 if (err.code === 11000) {
                     res.status(500).json({
-                        message: 'A post with the same title already exists'
+                        message: 'A post with the same title already exists',
+                        code: 11000
                     })
                 } else {
                     res.status(500).json({
@@ -73,3 +119,18 @@ exports.create_blogPost_post = [
         }
     }
 ]
+
+exports.publishPost_post = async (req, res) => {
+    try {
+        const id = req.body.id
+
+        res.json({
+            message: `received ${id}`
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+}

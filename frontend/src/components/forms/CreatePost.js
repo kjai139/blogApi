@@ -113,8 +113,8 @@ const CreatePost = () => {
 
             if (response.data.success) {
                 console.log(response.data.message)
-                console.log('user', response.data.user)
-                console.log('delta', response.data.delta)
+                // console.log('user', response.data.user)
+                // console.log('delta', response.data.delta)
                 setResultMsg(response.data.message)
             }
         } catch(err) {
@@ -122,8 +122,9 @@ const CreatePost = () => {
             
             if (err.request.status === 401) {
                setErrorMsg('User is not logged in')
-            } else if (err.request.status === 500) {
+            } else if (err.response.data.code === 11000) {
                 setResultMsg(err.response.data.message)
+                
             } else {
                 console.log(err)
             }

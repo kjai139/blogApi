@@ -24,7 +24,7 @@ const generateTimeStamp = () => {
 
 exports.image_upload_post = async (req, res) => {
     const image = req.file.path
-    const filename = req.body.filename
+    const filename = req.body.filename.replace(/ /g, '_')
     debug('image', image)
     const bucketname = 'kjblogapiodin'
     const s3KeyName = `${generateRandomString(5)}_${generateTimeStamp()}${filename}`
