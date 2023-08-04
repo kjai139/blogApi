@@ -124,8 +124,16 @@ exports.publishPost_post = async (req, res) => {
     try {
         const id = req.body.id
 
+        const updatedPost = {
+            published: true,
+            publishDate: Date.now()
+
+        }
+
+        const response = await BlogPost.findByIdAndUpdate(id, updatedPost)
+
         res.json({
-            message: `received ${id}`
+            message: `Post published`
         })
 
     } catch (err) {
