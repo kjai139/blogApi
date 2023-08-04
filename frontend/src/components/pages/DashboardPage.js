@@ -61,6 +61,10 @@ const DashBoard = () => {
             const response = await axiosInstance.delete(`/posts/delete?id=${id}`, {
                 withCredentials: true
             })
+
+            setResultMsg(response.data.message)
+
+            console.log(response.data.message)
         } catch (err) {
             console.log(err)
         }
@@ -105,7 +109,7 @@ const DashBoard = () => {
                             <button onClick={() => publishPost(node._id)}>Publish</button>
                             }
                             
-                            <button>Delete</button>
+                            <button onClick={() => deletePost(node._id)}>Delete</button>
                             </div>
                         </div>
                     )

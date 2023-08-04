@@ -142,3 +142,45 @@ exports.publishPost_post = async (req, res) => {
         })
     }
 }
+
+exports.blogPost_delete = async (req, res) => {
+    const deleteS3Images = async (delta) => {
+        debug(delta)
+        for (const op of delta.ops) {
+            debug('op', op)
+            if (op.insert.image) {
+                debug('image url for deletion:', op.insert.image)
+                const imageUrl = op.insert.image
+                const urlParts = imageUrl.split('/')
+                const filename = urlParts[urlParts.length -1]
+                const deleteParams = {
+                    Bucket: 'kjblogapiodin',
+                    Key: `images/perm/${filename}`
+                }
+                const deleteCommand = new DeleteObjectCommand(deleteParams)
+                await s3Client.send(deleteCommand)
+                debug(`${filename} deleted`)
+            }
+            
+        }
+    }
+    try {
+        const id = req.query.id
+        const post = await BlogPost.findById(id)
+
+        await deleteS3Images(post.body)
+        
+        await post.deleteOne()
+
+
+       
+        res.json({
+            message: 'Post deleted'
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}
