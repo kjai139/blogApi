@@ -184,3 +184,18 @@ exports.blogPost_delete = async (req, res) => {
         })
     }
 }
+
+exports.homepage_blogPost_get = async (req, res) => {
+    try {
+        const posts = await BlogPost.find({published: true})
+
+        res.json({
+            blogPosts: posts,
+            
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}

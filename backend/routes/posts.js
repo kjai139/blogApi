@@ -13,4 +13,6 @@ router.post('/publish', isAuthenticated, blogPostController.publishPost_post)
 
 router.delete('/delete', isAuthenticated, blogPostController.blogPost_delete)
 
+router.get('/home/get', blogPostController.homepage_blogPost_get)
+
 module.exports = router

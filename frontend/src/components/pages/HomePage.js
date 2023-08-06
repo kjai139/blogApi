@@ -10,11 +10,12 @@ const HomePage = () => {
 
     const getBlogPosts = async () => {
         try {
-            const response = await axiosInstance.get('/posts/get', {
+            const response = await axiosInstance.get('/posts/home/get/', {
                 withCredentials: true
             })
 
             setBlogPosts(response.data.blogPosts)
+            console.log(response.data.blogPosts)
         } catch (err) {
             setResultMsg(err.message)
         }
@@ -23,7 +24,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <button>Get Posts</button>
+            <button onClick={getBlogPosts}>Get Posts</button>
             Home page
         </div>
     )
