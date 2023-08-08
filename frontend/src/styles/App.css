@@ -8,6 +8,9 @@
   --modalBorderR: 8px;
   --errorColor: #f43f5e;
   --greyOverlay: rgba(128, 128, 128, 0.5);
+  --postBorderC: #ccc;
+
+  --siteBg: #fafafa;
 }
 
 
@@ -15,6 +18,7 @@
   margin: 0;
   font-family: var(--RegularFont);
   box-sizing: border-box;
+  
   
 }
 
@@ -43,13 +47,16 @@ li {
 
 .top-nav{
   display: flex;
+  z-index: 9999;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   left: 0;
+  top:0;
   margin: 0 auto;
   right: 0;
   width: 100%;
+  background-color: var(--siteBg);
   border-bottom: 2px solid var(--lineColor);
 }
 
@@ -215,6 +222,17 @@ li {
   justify-content: space-between;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 1rem;
+  border-radius: var(--modalBorderR);
+}
+
+.home-post-cont {
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  border-radius: var(--modalBorderR);
+  background-color: white;
+}
+.home-post-title {
+  
+  padding: 3px 5px;
   border-radius: var(--modalBorderR);
 }
 

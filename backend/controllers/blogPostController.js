@@ -187,7 +187,7 @@ exports.blogPost_delete = async (req, res) => {
 
 exports.homepage_blogPost_get = async (req, res) => {
     try {
-        const posts = await BlogPost.find({published: true})
+        const posts = await BlogPost.find({published: true}).sort({createdAt: -1})
 
         res.json({
             blogPosts: posts,

@@ -1,17 +1,17 @@
 import React from "react";
 import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import 'react-quill/dist/quill.bubble.css'
 
-const QuillEditor = () => {
-    const [value, setValue] = useState('')
+const QuillDisplay = ({delta}) => {
+    
 
     return (
         <ReactQuill
-        theme="snow"
-        value={value}
-        onChange={setValue}
+        theme="bubble"
+        value={delta}
+        readOnly={true}
         ></ReactQuill>
     )
 }
 
-export default QuillEditor
+export default QuillDisplay
