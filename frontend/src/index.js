@@ -9,6 +9,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import DashBoard from './components/pages/DashboardPage';
 import HomePage from './components/pages/HomePage';
 import CreatePostPage from './components/pages/CreatePostPage';
+import PostDetailPage from './components/pages/PostDetailPage';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path:'/dashboard/:id/posts/create',
     element: <App><CreatePostPage></CreatePostPage></App>
+  },
+  {
+    path:'/post/:id',
+    element:<App><PostDetailPage></PostDetailPage></App>
   }
 ])
 

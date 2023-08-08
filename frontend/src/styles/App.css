@@ -236,6 +236,10 @@ li {
   border-radius: var(--modalBorderR);
 }
 
+.home-post-cont, .ql-editor:hover p{
+  cursor: pointer;
+}
+
 @media screen and (min-width: 320px) {
   .modal-cont {
     width: 400px;

@@ -43,7 +43,7 @@ const HomePage = () => {
 
             blogPosts.map((node) => {
                 return (
-                    <div key={node._id} className="home-post-cont" onClick={() => navigate(`/posts/${node._id}`)}>
+                    <div key={node._id} className="home-post-cont" onClick={() => navigate(`/post/${node._id}`)}>
                         <div style={{
                             padding:'15px'
                         }}>
