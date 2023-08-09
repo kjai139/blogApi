@@ -42,8 +42,16 @@ const HomePage = () => {
             {blogPosts &&
 
             blogPosts.map((node) => {
+
+                let url = node.postTitle.replace(/\s+/g, "-").toLowerCase()
                 return (
-                    <div key={node._id} className="home-post-cont" onClick={() => navigate(`/post/${node._id}`)}>
+
+                    
+                    <div key={node._id} className="home-post-cont" onClick={() => navigate(`/post/${url}`, {
+                        state: {
+                            id: node._id
+                        }
+                    })}>
                         <div style={{
                             padding:'15px'
                         }}>

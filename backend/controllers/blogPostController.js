@@ -199,3 +199,20 @@ exports.homepage_blogPost_get = async (req, res) => {
         })
     }
 }
+
+exports.blogPost_details_get = async (req, res) => {
+    try {
+
+        const blogPost = await BlogPost.findById(req.query.id)
+
+        res.json({
+            message: req.query.id,
+            blogPost: blogPost
+        })
+        
+    }catch (err) {
+        res.status(500).json({
+            message: err
+        })
+    }
+}

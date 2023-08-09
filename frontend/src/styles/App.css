@@ -236,7 +236,7 @@ li {
   border-radius: var(--modalBorderR);
 }
 
-.home-post-cont, .ql-editor:hover p{
+.home-post-cont, .home-post-cont .ql-editor:hover p{
   cursor: pointer;
 }
 
