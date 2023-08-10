@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axiosInstance from '../../modules/axiosInstance'
 import QuillDisplay from "../forms/QuillEditor";
+import CommentForm from "../forms/PostComment";
+import { UserContext } from "../UserContext";
 
 const PostDetailPage = () => {
 
     const location = useLocation()
     const postId = location.state.id
 
+    const { user } = useContext(UserContext)
+
 
     const [blogPost, setBlogPost] = useState()
 
     useEffect(() => {
         console.log(postId)
+        getPost()
     
     }, [])
 
@@ -21,6 +26,7 @@ const PostDetailPage = () => {
 
         try {
             const response = await axiosInstance.get(`/posts/detail/get?id=${postId}`)
+            console.log(user)
 
             console.log(response.data.blogPost)
             setBlogPost(response.data.blogPost)
@@ -31,8 +37,9 @@ const PostDetailPage = () => {
 
     return (
         <div>
-            <button onClick={getPost}>Get Post</button>
+            
             {blogPost && <QuillDisplay delta={blogPost.body}></QuillDisplay>}
+            <CommentForm></CommentForm>
         </div>
     )
 }
