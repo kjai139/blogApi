@@ -14,6 +14,7 @@ const PostDetailPage = () => {
 
 
     const [blogPost, setBlogPost] = useState()
+    const [comments, setComments] = useState()
 
     useEffect(() => {
         console.log(postId)
@@ -35,11 +36,24 @@ const PostDetailPage = () => {
         }
     }
 
+    const getComments = async () => {
+        try {
+            const response = await axiosInstance.get(`/comments/get?id=${postId}`)
+
+            console.log(response.data.comments)
+            setComments(response.data.comments)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <div>
             
             {blogPost && <QuillDisplay delta={blogPost.body}></QuillDisplay>}
-            <CommentForm></CommentForm>
+            
+            <button onClick={getComments}>GET COMMENTS</button>
+            <CommentForm postId={postId}></CommentForm>
         </div>
     )
 }

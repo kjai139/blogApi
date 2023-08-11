@@ -14,6 +14,10 @@ const CommentSchema = new Schema({
     body: {
         type:Schema.Types.Mixed,
         required: true
+    },
+    postId: {
+        required: true,
+        type:Schema.Types.ObjectId
     }
 })
 

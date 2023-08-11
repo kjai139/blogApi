@@ -11,6 +11,8 @@
   --postBorderC: #ccc;
 
   --siteBg: #fafafa;
+
+  --contentSidePadding: 15px;
 }
 
 
@@ -238,6 +240,10 @@ li {
 
 .home-post-cont, .home-post-cont .ql-editor:hover p{
   cursor: pointer;
+}
+
+.post-comment-cont {
+  padding: var(--contentSidePadding);
 }
 
 @media screen and (min-width: 320px) {

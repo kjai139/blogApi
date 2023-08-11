@@ -1,13 +1,17 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import axiosInstance from '../../modules/axiosInstance'
 import { UserContext } from "../UserContext";
+import ResultModal from "../modals/resultModal";
 
-const CommentForm = () => {
+const CommentForm = ({postId}) => {
 
     const quillRef = useRef(null)
 
     const { user } = useContext(UserContext)
+
+    const [resultMsg, setResultMSg] = useState('')
+    const [content, setContent] = useState('')
 
 
     const quillModule = {
@@ -22,12 +26,16 @@ const CommentForm = () => {
         
         try {
             const response = await axiosInstance.post('/comments/post', {
-                comment:delta
+                comment:delta,
+                postId: postId
+                 
             }, {
                 withCredentials: true
             })
 
             console.log(response.data.message)
+            setResultMSg(response.data.message)
+            
             
         }catch (err) {
             console.log(err)
@@ -35,10 +43,18 @@ const CommentForm = () => {
         
     }
 
+    const handleCloseModal = () => {
+        setResultMSg('')
+        setContent('')
+    }
+
     
 
     return (
-        <div>
+        <div className="post-comment-cont">
+            {resultMsg && 
+            <ResultModal message={resultMsg} closeModal={handleCloseModal}></ResultModal>
+            }
             <div>
                 <h3>Comment Section</h3>
             </div>
@@ -51,7 +67,7 @@ const CommentForm = () => {
             <form onSubmit={postComment}>
                 
                 <label>Comment:</label>
-                <ReactQuill theme="snow" ref={quillRef} modules={quillModule}></ReactQuill>
+                <ReactQuill theme="snow" ref={quillRef} modules={quillModule} value={content}></ReactQuill>
                 <div style={{
                     display:'flex'
                 }}>

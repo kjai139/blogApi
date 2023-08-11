@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const usersRouter = require('./routes/users')
 const imagesRouter = require('./routes/images')
 const blogPostRouter = require('./routes/posts')
+const commentsRouter = require('./routes/comments')
 
 require('dotenv').config()
 const app = express()
@@ -40,6 +41,7 @@ app.use(express.urlencoded({extended:false}))
 app.use('/users', usersRouter)
 app.use('/images', imagesRouter)
 app.use('/posts', blogPostRouter)
+app.use('/comments', commentsRouter)
 
 app.listen(port, '::', () => {
     console.log(`server running on port ${port}!`)
