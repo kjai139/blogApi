@@ -56,13 +56,19 @@ const TopNav = () => {
             {isSignInOpen && <SignInModal closeModal={() => setIsSignInOpen(false)}></SignInModal>}
             <nav className='top-nav'>
                 <nav className='top-nav-w'>
+                <Link to={'/'} className='nav-links'>
                 <h1 style={{
                     fontSize: '40px'
                 }}>The Blog.</h1>
+                </Link>
                 <ul className='top-nav-ul'>
+                    {user ? <li>
+                        <Link to={'/dashboard'} className='nav-links'>Dashboard</Link>
+                    </li> : 
                     <li>
-                        Blog
+                        Home
                     </li>
+                    }
                     <li>
                         About
                     </li>

@@ -29,7 +29,7 @@ exports.comment_post = async (req, res) => {
 exports.comments_get = async (req, res) => {
     try {
         const postId = req.query.id
-        const comments = await Comment.find({ postId: postId })
+        const comments = await Comment.find({ postId: postId }).sort({createdAt: -1}).populate('author')
 
         res.json({
             comments: comments

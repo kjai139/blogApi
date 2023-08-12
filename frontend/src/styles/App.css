@@ -13,6 +13,10 @@
   --siteBg: #fafafa;
 
   --contentSidePadding: 15px;
+  --dateColor: #64748b;
+
+  --commentBgColor:#dcfce7;
+  --commentBorderColor: #64748b;
 }
 
 
@@ -45,6 +49,10 @@ li {
 
 .nav-cont {
   height: 100px;
+}
+
+.nav-links {
+
 }
 
 .top-nav{
@@ -95,7 +103,7 @@ li {
   background-color: var(--errorColor);
 }
 
-.nav-btn {
+.nav-btn, .nav-links {
   border: 0;
   background-color: inherit;
   font-size: inherit;
@@ -111,9 +119,13 @@ li {
   transition: background-size 0.3s, background-position 0s 0.3s;
 }
 
+.nav-links:visited {
+  color: inherit;
+}
 
 
-.nav-btn:hover {
+
+.nav-btn:hover, .nav-links:hover {
   cursor: pointer;
   background-size: 100% 2px;
   background-position: bottom right;
@@ -244,6 +256,56 @@ li {
 
 .post-comment-cont {
   padding: var(--contentSidePadding);
+}
+
+.comment-cont {
+  padding: var(--contentSidePadding);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comments-quill {
+  background-color: var(--commentBgColor);
+  position: relative;
+  border: 10px solid var(--commentBorderColor);
+  border-radius: 10px;
+  
+}
+
+.comments-quill:before {
+  content:' ';
+  position: absolute;
+  border: 20px solid;
+  border-color:transparent transparent var(--commentBorderColor) transparent;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+
+}
+
+.comments-quill:after {
+  content: ' ';
+  position: absolute;
+  left: 10px;
+  transform: translateY(-100%);
+  top: 0;
+  
+  border: 10px solid;
+  border-color: transparent transparent var(--commentBgColor) transparent;
+}
+
+.comment-user-cont {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+
+.comment-date {
+  
+  color: var(--dateColor);
+  font-size: .85em;
 }
 
 @media screen and (min-width: 320px) {

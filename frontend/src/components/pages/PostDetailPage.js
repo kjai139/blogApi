@@ -4,6 +4,9 @@ import axiosInstance from '../../modules/axiosInstance'
 import QuillDisplay from "../forms/QuillEditor";
 import CommentForm from "../forms/PostComment";
 import { UserContext } from "../UserContext";
+import QuillComments from "../forms/CommentsQuill";
+import formatDistance from "date-fns/formatDistance";
+import { parseISO } from "date-fns";
 
 const PostDetailPage = () => {
 
@@ -15,12 +18,14 @@ const PostDetailPage = () => {
 
     const [blogPost, setBlogPost] = useState()
     const [comments, setComments] = useState()
+    const [needRefresh, setNeedRefresh] = useState(false)
 
     useEffect(() => {
         console.log(postId)
         getPost()
+        getComments()
     
-    }, [])
+    }, [needRefresh])
 
     const getPost = async () => {
         
@@ -49,11 +54,36 @@ const PostDetailPage = () => {
 
     return (
         <div>
-            
+           
             {blogPost && <QuillDisplay delta={blogPost.body}></QuillDisplay>}
+            {blogPost &&
+            <div>
+            <h3>Comment Section for "{blogPost.postTitle}"</h3>
+            </div>
+            }
+            { comments && 
+            comments.map((node, index) => {
+
+                const today = new Date()
+                const parsedCreatedAt = parseISO(node.createdAt)
+
+                const formattedDate = formatDistance(parsedCreatedAt, today, {
+                    addSuffix: true
+                })
+                return (
+                    <div key={node._id} className="comment-cont">
+                        <div className="comment-user-cont">
+                        <span className="comment-name-cont">{node.author.name}</span>
+                        <span className="comment-date">{formattedDate}</span>
+                        </div>
+                        <QuillComments delta={node.body}></QuillComments>
+                    </div>
+                )
+            })
+            }
             
-            <button onClick={getComments}>GET COMMENTS</button>
-            <CommentForm postId={postId}></CommentForm>
+           
+            <CommentForm postId={postId} closeModal={() => setNeedRefresh( prevState => !prevState)}></CommentForm>
         </div>
     )
 }

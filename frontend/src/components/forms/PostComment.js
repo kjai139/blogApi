@@ -4,7 +4,7 @@ import axiosInstance from '../../modules/axiosInstance'
 import { UserContext } from "../UserContext";
 import ResultModal from "../modals/resultModal";
 
-const CommentForm = ({postId}) => {
+const CommentForm = ({postId, closeModal}) => {
 
     const quillRef = useRef(null)
 
@@ -46,6 +46,7 @@ const CommentForm = ({postId}) => {
     const handleCloseModal = () => {
         setResultMSg('')
         setContent('')
+        closeModal()
     }
 
     
@@ -55,9 +56,7 @@ const CommentForm = ({postId}) => {
             {resultMsg && 
             <ResultModal message={resultMsg} closeModal={handleCloseModal}></ResultModal>
             }
-            <div>
-                <h3>Comment Section</h3>
-            </div>
+            
             { user ? null :
             <h2>Must Sign in to post comments</h2> 
             }

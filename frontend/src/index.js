@@ -17,11 +17,11 @@ const router = createBrowserRouter([
     element:<App><HomePage></HomePage></App>,
   },
   {
-    path:'/dashboard/:id',
+    path:'/dashboard/',
     element: <App><DashBoard></DashBoard></App>
   },
   {
-    path:'/dashboard/:id/posts/create',
+    path:'/dashboard/posts/create',
     element: <App><CreatePostPage></CreatePostPage></App>
   },
   {
