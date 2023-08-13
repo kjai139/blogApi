@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axiosInstance from '../../modules/axiosInstance'
 import QuillDisplay from "../forms/QuillEditor";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 
 const HomePage = () => {
+
+    const { needRefresh, setNeedRefresh } = useContext(UserContext)
 
     const [blogPosts, setBlogPosts] = useState()
 
@@ -26,10 +29,15 @@ const HomePage = () => {
     }
 
     useEffect(() => {
+        console.log('homepage use effect')
         getBlogPosts()
+        
+        console.log(needRefresh)
     }, [])
 
-    
+    const checkRefresh = () => {
+        console.log(needRefresh)
+    }
 
 
     return (
@@ -38,6 +46,7 @@ const HomePage = () => {
             flexDirection:'column',
             gap:'1rem'
         }}>
+            <button onClick={checkRefresh}>check refresh</button>
             
             {blogPosts &&
 

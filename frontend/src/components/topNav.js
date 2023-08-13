@@ -7,7 +7,9 @@ import {Link, useNavigate} from 'react-router-dom'
 const TopNav = () => {
 
     const [isSignInOpen, setIsSignInOpen] = useState(false)
-    const { user, setUser, needRefresh } = useContext(UserContext)
+    const { user, setUser, needRefresh, setNeedRefresh } = useContext(UserContext)
+
+    
 
     const navigate = useNavigate()
 
@@ -16,14 +18,16 @@ const TopNav = () => {
             const response = await axiosInstance.get('users/get', {
                 withCredentials:true
             })
-            console.log(response.data)
+            console.log(response.data, 'checked login')
             if (response.data.logged_in) {
                 setUser(response.data)
             } else {
                 console.log('user is not logged in')
+                setUser(null)
             }
         } catch (err) {
             console.log('checkloginstatus error', err)
+            setUser(null)
         }
     }
 
@@ -45,25 +49,29 @@ const TopNav = () => {
     }
 
     useEffect(() => {
-        setUser(null)
+        
         checkLoginStatus()
         
 
     }, [needRefresh])
+
+    const setRefresh = () => {
+        setNeedRefresh(prev => !prev)
+    }
 
     return (
         <nav className='nav-cont'>
             {isSignInOpen && <SignInModal closeModal={() => setIsSignInOpen(false)}></SignInModal>}
             <nav className='top-nav'>
                 <nav className='top-nav-w'>
-                <Link to={'/'} className='nav-links'>
+                <Link to={'/'} onClick={setRefresh} className='nav-links'>
                 <h1 style={{
                     fontSize: '40px'
                 }}>The Blog.</h1>
                 </Link>
                 <ul className='top-nav-ul'>
                     {user ? <li>
-                        <Link to={'/dashboard'} className='nav-links'>Dashboard</Link>
+                        <Link to={'/dashboard'} onClick={setRefresh} className='nav-links'>Dashboard</Link>
                     </li> : 
                     <li>
                         Home

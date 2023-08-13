@@ -8,7 +8,7 @@ import parseISO from "date-fns/parseISO";
 
 const DashBoard = () => {
 
-    const { user } = useContext(UserContext)
+    const { user, setNeedRefresh } = useContext(UserContext)
     const navigate = useNavigate()
 
     const [blogPosts, setBlogPosts] = useState()
@@ -34,9 +34,10 @@ const DashBoard = () => {
 
     useEffect(() => {
         console.log(user)
+        
         if (user) {
             getPosts()
-        }
+        } 
         
     }, [user])
 
@@ -78,17 +79,21 @@ const DashBoard = () => {
     return (
         
         <div>
+            { user ?
+            <div>
             {resultMsg && 
             <ResultModal message={resultMsg} closeModal={closeModalRefresh}></ResultModal>
             }
-            <span>User dashboard</span>
+            <div style={{
+                display:'flex',
+                justifyContent: 'space-between',
+                padding: '1rem'
+            }}>
+            <span>User Dashboard</span>
             <div>
-                <button onClick={() => navigate('./posts/create')}>Create Post</button>
+                <button onClick={() => navigate('./posts/create')}>Create a post</button>
             </div>
-            <div>
-                <span>Posts display</span>
-                <button onClick={getPosts}>Get posts</button>
-                <button onClick={() => console.log(user)}>Check User</button>
+            
             </div>
             { blogPosts ?
             <div className="dash-post-cont">
@@ -119,6 +124,9 @@ const DashBoard = () => {
             <div>
                 No Posts Yet
             </div>}
+            </div>:
+            <span>PLEASE LOG IN TO SEE DASHBOARD</span>
+            }
         </div>
            
     )
