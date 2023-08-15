@@ -187,10 +187,21 @@ exports.blogPost_delete = async (req, res) => {
 
 exports.homepage_blogPost_get = async (req, res) => {
     try {
-        const posts = await BlogPost.find({published: true}).sort({createdAt: -1})
+        const pageSize = parseInt(req.query.pageSize)
+        const page = parseInt(req.query.page)
+
+        const totalPosts = await BlogPost.countDocuments({
+            published: true
+        })
+
+        const posts = await BlogPost.find({published: true}).skip((page - 1) * pageSize).sort({createdAt: -1}).limit(pageSize)
+
+        // debug(totalPosts, 'totalPosts')
+        // debug(pageSize, 'pagesize')
 
         res.json({
             blogPosts: posts,
+            totalPages: Math.ceil(totalPosts / pageSize)
             
         })
     } catch (err) {

@@ -308,6 +308,27 @@ li {
   font-size: .85em;
 }
 
+.pagination {
+  display: flex;
+  gap: 1rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 40px 0;
+}
+
+.pagination > li:hover {
+  cursor: pointer;
+}
+
+.pagination > .selected {
+  color: red;
+  pointer-events: none;
+}
+
+.pagination > .disabled {
+  display: none;
+}
+
 @media screen and (min-width: 320px) {
   .modal-cont {
     width: 400px;
