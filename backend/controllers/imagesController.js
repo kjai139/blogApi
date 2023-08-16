@@ -24,10 +24,12 @@ const generateTimeStamp = () => {
 
 exports.image_upload_post = async (req, res) => {
     const image = req.file.path
-    const filename = req.body.filename.replace(/ /g, '_')
+    // const filename = req.body.filename.replace(/ /g, '_')
     debug('image', image)
+
+    const multerFileName = req.file.originalname.replace(/ /g, '_')
     const bucketname = 'kjblogapiodin'
-    const s3KeyName = `${generateRandomString(5)}_${generateTimeStamp()}${filename}`
+    const s3KeyName = `${generateRandomString(5)}_${generateTimeStamp()}${multerFileName}`
 
     debug('s3keyname', s3KeyName)
     
@@ -35,7 +37,8 @@ exports.image_upload_post = async (req, res) => {
     const params = {
         Bucket: bucketname,
         Key: `images/temp/${s3KeyName}`,
-        Body: fs.createReadStream(req.file.path),
+        // Body: fs.createReadStream(req.file.path),
+        Body: req.file.buffer,
         ACL: 'public-read',
         ContentType: 'image/x-icon'
     }
