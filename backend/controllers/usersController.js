@@ -172,7 +172,7 @@ exports.user_logout_post= (req, res) => {
         res.cookie('jwt', '', {
             httpOnly: true,
             maxAge: -1,
-            
+            domain: domain,
             path: '/',
             
     
