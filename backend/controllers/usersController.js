@@ -4,6 +4,7 @@ const debug = require('debug')('blogApi:usersController')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+
 require('dotenv').config()
 
 const domain = process.env.FRONTEND_DOMAIN || 'localhost'
@@ -160,7 +161,7 @@ exports.users_login_get = (req, res) => {
     } catch (err) {
         res.json({
             logged_in: false,
-            message: err
+            message: `${message}, ${token}`
         })
     }
 }
