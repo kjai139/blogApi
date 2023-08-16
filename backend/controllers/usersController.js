@@ -122,8 +122,8 @@ exports.users_login_post = async (req, res) => {
                 httpOnly: true,
                 secure: true,
                 maxAge: 60 * 60 * 1000,
-                domain: domain,
-                sameSite: 'None',
+                domain: '.vercel.app',
+                
                 path: '/'
             })
             debug('token sent via httponly cookie')
