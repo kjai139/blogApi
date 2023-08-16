@@ -5,6 +5,7 @@ import axiosInstance from '../../modules/axiosInstance'
 import ResultModal from "../modals/resultModal";
 import formatRelative from 'date-fns/formatRelative'
 import parseISO from "date-fns/parseISO";
+import ReactPaginate from 'react-paginate'
 
 const DashBoard = () => {
 
@@ -14,11 +15,15 @@ const DashBoard = () => {
     const [blogPosts, setBlogPosts] = useState()
     const [resultMsg, setResultMsg] = useState('')
 
+    const pageSize = 5
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
+
     
 
     const getPosts = async () => {
         try {
-            const response = await axiosInstance.get(`/posts/get?id=${user.id}`, {
+            const response = await axiosInstance.get(`/posts/get?id=${user.id}&currentPage=${currentPage}&pageSize=${pageSize}`, {
                 withCredentials: true
             })
 
@@ -26,6 +31,7 @@ const DashBoard = () => {
             if (response.data.blogPosts) {
                 console.log(response.data.blogPosts)
                 setBlogPosts(response.data.blogPosts)
+                setTotalPages(response.data.totalPages)
             }
         }catch (err) {
             console.log(err)
@@ -39,7 +45,11 @@ const DashBoard = () => {
             getPosts()
         } 
         
-    }, [user])
+    }, [user, currentPage])
+
+    const handlePageChange = ({selected}) => {
+        setCurrentPage(selected + 1)
+    }
 
     const publishPost = async (id) => {
         try {
@@ -127,6 +137,23 @@ const DashBoard = () => {
             </div>:
             <span>PLEASE LOG IN TO SEE DASHBOARD</span>
             }
+            { blogPosts &&
+                <div style={{
+                display:'flex',
+                justifyContent:'center'
+            }}>
+            <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageChange}
+            pageRangeDisplayed={5}
+            pageCount={totalPages}
+            previousLabel="< previous"
+            
+            containerClassName="pagination"
+            marginPagesDisplayed={2}
+            />
+            </div>}
         </div>
            
     )

@@ -89,6 +89,7 @@ const HomePage = () => {
             
             
             }
+            {blogPosts && 
             <div style={{
                 display:'flex',
                 justifyContent:'center'
@@ -104,7 +105,7 @@ const HomePage = () => {
             containerClassName="pagination"
             marginPagesDisplayed={2}
             />
-            </div>
+            </div>}
             
         </div>
     )

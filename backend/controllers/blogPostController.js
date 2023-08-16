@@ -17,11 +17,26 @@ const s3Client = new S3Client({
 exports.get_blogPost_get = async (req, res) => {
     debug(req.query.id)
     try {
-        const posts = await BlogPost.find({author: req.query.id}).populate('author').sort({createdAt: -1})
+        const pageSize = parseInt(req.query.pageSize)
+        const currentPage = parseInt(req.query.currentPage)
+
+        const totalDocs = await BlogPost.countDocuments(
+            {
+                author: req.query.id
+            }
+        )
+
+        const totalPages = Math.ceil(totalDocs / pageSize)
+
+
+        const posts = await BlogPost.find({author: req.query.id}).skip((currentPage -1) * pageSize)
+        .limit(pageSize)
+        .populate('author').sort({createdAt: -1})
 
         res.json({
             message: `received id ${req.query.id}`,
-            blogPosts: posts
+            blogPosts: posts,
+            totalPages: totalPages
         })
     }catch (err) {
         res.json({

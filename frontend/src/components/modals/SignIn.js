@@ -19,7 +19,7 @@ const SignInModal = ({closeModal}) => {
 
     const handleCloseModal = (e) => {
         e.preventDefault()
-        setNeedRefresh(true)
+        setNeedRefresh(prev => !prev)
         setLoginResult('')
         closeModal()
     }
