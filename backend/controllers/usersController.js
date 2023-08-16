@@ -120,7 +120,7 @@ exports.users_login_post = async (req, res) => {
             //storing jwt in http-only cookie method
             res.cookie('jwt', token, {
                 httpOnly: true,
-                secure: true,
+                // secure: true,
                 maxAge: 60 * 60 * 1000,
                 domain: domain,
                 path: '/'
