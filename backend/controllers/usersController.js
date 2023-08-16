@@ -161,7 +161,7 @@ exports.users_login_get = (req, res) => {
     } catch (err) {
         res.json({
             logged_in: false,
-            message: `${message}, ${token}`
+            message: `${err}, ${token}`
         })
     }
 }
