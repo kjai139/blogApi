@@ -123,7 +123,7 @@ exports.users_login_post = async (req, res) => {
                 // secure: true,
                 maxAge: 60 * 60 * 1000,
                 // domain: 'blog-api-gilt-ten.vercel.app',
-                
+                sameSite: 'None'
                 // path: '/'
             })
             debug('token sent via httponly cookie')
