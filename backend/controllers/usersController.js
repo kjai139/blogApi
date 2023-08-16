@@ -145,7 +145,7 @@ exports.users_login_post = async (req, res) => {
 
 exports.users_login_get = (req, res) => {
     const token = req.cookies.jwt
-    debug(token, 'cookies', req.cookies)
+    debug(token, 'req cookies', req.cookies)
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
