@@ -28,11 +28,11 @@ const main = async () => {
 
 main()
 
-// app.use(cors({
-//     origin: allowedOrigins,
-//     credentials: true,
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
     
-// }))
+}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended:false}))
@@ -44,6 +44,10 @@ app.use('/images', imagesRouter)
 app.use('/posts', blogPostRouter)
 app.use('/comments', commentsRouter)
 
-app.listen(port, '::', () => {
+// app.listen(port, '::', () => {
+//     console.log(`server running on port ${port}!`)
+// })
+
+app.listen(port, () => {
     console.log(`server running on port ${port}!`)
 })
