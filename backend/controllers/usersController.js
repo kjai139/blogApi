@@ -74,7 +74,7 @@ exports.users_create_check = async (req, res) => {
         debug(response)
         if (response) {
             res.json({
-                message:'The Username already exists',
+                message:'The username already exists',
                 success: false
             })
         } else {
