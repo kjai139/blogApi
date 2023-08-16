@@ -13,7 +13,7 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 4000
 const mongodb = process.env.MONGO_LOGIN
-const allowedOrigins = ['http://localhost:3000', 'https://blog-api-gilt-ten.vercel.app/']
+const allowedOrigins = ['http://localhost:3000', 'https://blog-api-gilt-ten.vercel.app']
 
 const main = async () => {
     try {
