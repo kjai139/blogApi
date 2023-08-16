@@ -122,7 +122,7 @@ exports.users_login_post = async (req, res) => {
                 httpOnly: true,
                 secure: true,
                 maxAge: 60 * 60 * 1000,
-                domain: '.vercel.app',
+                domain: 'blog-api-gilt-ten.vercel.app',
                 
                 path: '/'
             })
