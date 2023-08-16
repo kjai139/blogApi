@@ -121,7 +121,7 @@ exports.users_login_post = async (req, res) => {
                 httpOnly: true,
                 secure: true,
                 maxAge: 60 * 60 * 1000,
-                domain: domain
+                domain: 'https://blog-api-gilt-ten.vercel.app'
             })
             debug('token sent via httponly cookie')
             res.json({
@@ -170,7 +170,7 @@ exports.user_logout_post= (req, res) => {
         res.cookie('jwt', '', {
             httpOnly: true,
             maxAge: -1,
-            domain: 'https://blog-api-gilt-ten.vercel.app',
+            domain: domain,
             path: '/'
     
     
