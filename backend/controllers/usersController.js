@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 
-const domain = process.env.BACKEND_DOMAIN || 'localhost'
+const domain = process.env.FRONTEND_DOMAIN || 'localhost'
 
 exports.create_user_post = [
     body('userName')
