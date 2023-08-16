@@ -118,6 +118,7 @@ exports.users_login_post = async (req, res) => {
             
 
             //storing jwt in http-only cookie method
+            //for some reason on vercel don't set the domain or path when giving the cookie but you need to set samesite none and secure or it just keep saying it can't set cookie because domain invalid
             res.cookie('jwt', token, {
                 httpOnly: true,
                 secure: true,
